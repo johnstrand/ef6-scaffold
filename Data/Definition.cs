@@ -4,16 +4,21 @@ using System.Xml.Serialization;
 
 namespace ScaffoldEF.Data
 {
-    [XmlRoot("schemas")]
+    [XmlRoot("export")]
     public class Definition
     {
-        [XmlElement("schema")]
+        [XmlArray("schemas")]
+        [XmlArrayItem("schema")]
         public List<Schema> Schemas { get; set; }
 
-        public static List<Schema> Load(Stream str)
+        [XmlArray("foreign_keys")]
+        [XmlArrayItem("foreign_key")]
+        public List<ForeignKey> ForeignKeys { get; set; }
+
+        public static Definition Load(Stream str)
         {
             var serializer = new XmlSerializer(typeof(Definition));
-            return (serializer.Deserialize(str) as Definition).Schemas;
+            return (serializer.Deserialize(str) as Definition);
         }
     }
 
@@ -21,6 +26,7 @@ namespace ScaffoldEF.Data
     {
         [XmlAttribute("name")]
         public string Name { get; set; }
+
         [XmlElement("table")]
         public List<Table> Tables { get; set; }
     }
@@ -29,30 +35,40 @@ namespace ScaffoldEF.Data
     {
         [XmlAttribute("name")]
         public string Name { get; set; }
+
         [XmlArray("columns")]
         [XmlArrayItem("column")]
         public List<Column> Columns { get; set; }
-        [XmlArray("foreign_keys")]
-        [XmlArrayItem("foreign_key")]
-        public List<ForeignKey> ForeignKeys { get; set; }
     }
 
     public class Column
     {
         [XmlElement("name")]
         public string Name { get; set; }
+
         [XmlElement("is_identity")]
         public bool IsIdentity { get; set; }
+
         [XmlElement("is_nullable")]
         public bool IsNullable { get; set; }
+
         [XmlElement("is_rowguidcol")]
         public bool IsRowguidcol { get; set; }
+
         [XmlElement("max_length")]
-        public string MaxLength { get; set; }
+        public int MaxLength { get; set; }
+
         [XmlElement("precision")]
-        public string Precision { get; set; }
-        [XmlElement("primary_key")]
-        public bool PrimaryKey { get; set; }
+        public int Precision { get; set; }
+
+        [XmlElement("scale")]
+        public int Scale { get; set; }
+
+        [XmlElement("type")]
+        public string Type { get; set; }
+
+        [XmlElement("is_primary_key")]
+        public bool IsPrimaryKey { get; set; }
     }
 
     public class ForeignKey
@@ -60,24 +76,31 @@ namespace ScaffoldEF.Data
         [XmlElement("name")]
         public string Name { get; set; }
 
+        [XmlElement("alias")]
+        public string Alias { get; set; }
+
+        [XmlElement("from_schema")]
+        public string FromSchema { get; set; }
+
+        [XmlElement("from_table")]
+        public string FromTable { get; set; }
+
+        [XmlElement("to_schema")]
+        public string ToSchema { get; set; }
+
+        [XmlElement("to_table")]
+        public string ToTable { get; set; }
+
         [XmlElement("column")]
-        public List<ForeignKeyColumn> Column { get; set; }
+        public List<ForeignKeyColumn> Columns { get; set; }
     }
 
     public class ForeignKeyColumn
     {
-        [XmlElement("ref_table")]
-        public string RefTable { get; set; }
+        [XmlElement("to")]
+        public string To { get; set; }
 
-        [XmlElement("ref_column")]
-        public string RefColumn { get; set; }
-
-        [XmlElement("parent_table")]
-        public string ParentTable { get; set; }
-
-        [XmlElement("parent_column")]
-        public string ParentColumn { get; set; }
+        [XmlElement("from")]
+        public string From { get; set; }
     }
-
-
 }
