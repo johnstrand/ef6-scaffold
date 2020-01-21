@@ -6,13 +6,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.0" />
+    <None Remove="Queries\ExportForeignKeys.sql" />
+    <None Remove="Queries\ExportTables.sql" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="export.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <EmbeddedResource Include="Queries\ExportForeignKeys.sql" />
+    <EmbeddedResource Include="Queries\ExportTables.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.0" />
   </ItemGroup>
 
 </Project>
