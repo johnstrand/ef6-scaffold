@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="export.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
