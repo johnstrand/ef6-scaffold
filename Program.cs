@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ScaffoldEF.Data;
+using System;
 using System.IO;
 using System.Linq;
 
@@ -7,29 +7,10 @@ namespace ScaffoldEF
 {
     internal class Program
     {
-        private static readonly Dictionary<string, string> typeMap = new Dictionary<string, string>
-        {
-            { "datetime", "DateTime" },
-            { "date", "DateTime" },
-            { "datetime2", "DateTime" },
-            { "bigint", "long" },
-            { "bit", "bool" },
-            { "decimal", "decimal" },
-            { "float", "float" },
-            { "real", "single" },
-            { "int", "int" },
-            { "char", "string" },
-            { "nchar", "string" },
-            { "varchar", "string" },
-            { "nvarchar", "string" },
-            { "smallint", "short" },
-            { "tinyint", "short" },
-            { "uniqueidentifier", "Guid" },
-        };
 
         private static void Main(string[] args)
         {
-            var definition = Data.Definition.Load(File.OpenRead("export.xml"));
+            var definition = Definition.Load(File.OpenRead("export.xml"));
             using var output = new StreamWriter("export.txt");
             foreach (var schema in definition.Schemas)
             {
@@ -60,13 +41,13 @@ namespace ScaffoldEF
                             output.WriteText($"[StringLength({(column.MaxLength > 0 ? column.MaxLength.ToString() : "MAX")})]");
                         }
 
-                        if (typeMap.ContainsKey(column.Type))
+                        if (TypeMap.TryGet(column.Type, out var type))
                         {
-                            column.Type = typeMap[column.Type];
+                            column.Type = type;
                         }
                         else
                         {
-                            Console.WriteLine(column.Type);
+                            throw new Exception($"Found to type map matching {column.Type}");
                         }
 
                         if (column.IsNullable && column.Type != "string")
