@@ -22,6 +22,13 @@ namespace ScaffoldEF.Data
         }
     }
 
+    [XmlRoot("foreign_keys")]
+    public class ForeignKeysWrapper
+    {
+        [XmlElement("foreign_key")]
+        public List<ForeignKey> ForeignKeys { get; set; }
+    }
+
     public class Schema
     {
         [XmlAttribute("name")]
