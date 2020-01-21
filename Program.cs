@@ -7,11 +7,11 @@ namespace ScaffoldEF
 {
     internal class Program
     {
-
         private static void Main(string[] args)
         {
+            args = new[] { "configure" };
             var definition = Definition.Load(File.OpenRead("export.xml"));
-            using var output = new StreamWriter("export.txt");
+            using var output = new CodeWriter("export.txt");
             foreach (var schema in definition.Schemas)
             {
                 foreach (var table in schema.Tables)
@@ -107,7 +107,7 @@ namespace ScaffoldEF
             From
         }
 
-        private static string FormatFKName(Data.ForeignKey fk, FKDirection direction)
+        private static string FormatFKName(ForeignKey fk, FKDirection direction)
         {
             var name = (fk.Alias ?? fk.Name);
             if (name.StartsWith("FK_"))
@@ -122,48 +122,6 @@ namespace ScaffoldEF
             }
 
             return name;
-        }
-    }
-
-    internal static class Extensions
-    {
-        private static int indent = 0;
-
-        public static void WriteText(this StreamWriter writer, string text)
-        {
-            writer.WriteIndent();
-            writer.WriteLine(text);
-        }
-
-        public static void BeginBlock(this StreamWriter writer, string preamble)
-        {
-            writer.WriteIndent();
-            writer.WriteLine(preamble);
-            writer.WriteIndent();
-            writer.WriteLine("{");
-            indent++;
-        }
-
-        public static void EndBlock(this StreamWriter writer)
-        {
-            indent--;
-            writer.WriteIndent();
-            writer.WriteLine("}");
-        }
-
-        public static void WriteIndent(this StreamWriter writer)
-        {
-            writer.Write(new string('\t', indent));
-        }
-
-        public static void Indent(this StreamWriter _)
-        {
-            indent++;
-        }
-
-        public static void Deindent(this StreamWriter _)
-        {
-            indent--;
         }
     }
 }
