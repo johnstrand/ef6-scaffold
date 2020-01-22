@@ -7,11 +7,13 @@
 
   <ItemGroup>
     <None Remove="Queries\ExportForeignKeys.sql" />
+    <None Remove="Queries\ExportSingleTable.sql" />
     <None Remove="Queries\ExportTables.sql" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Queries\ExportForeignKeys.sql" />
+    <EmbeddedResource Include="Queries\ExportSingleTable.sql" />
     <EmbeddedResource Include="Queries\ExportTables.sql" />
   </ItemGroup>
 
