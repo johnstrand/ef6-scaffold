@@ -98,7 +98,14 @@ namespace ScaffoldEF
             }
 
             EndBlock();
-            EndBlock();
+        }
+
+        internal void WriteTexts(params string[] lines)
+        {
+            foreach (var line in lines)
+            {
+                WriteText(line);
+            }
         }
 
         public void WriteText(string text)

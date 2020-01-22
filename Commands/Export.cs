@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace ScaffoldEF.Commands
 {
@@ -10,12 +8,25 @@ namespace ScaffoldEF.Commands
     static class Export
     {
         [Command("table")]
-        internal static void Table(string target, string schema, string table)
+        internal static void Table(string target, string schema, string table, string file)
         {
             Console.WriteLine($"Exporting table {schema}.{table} on '{target}'");
             Settings.ConnectionManager.TryGet(target, out var connection).AssertIsTrue($"Connection '{target}' is not configured");
             using var db = new Data.DbClient(connection);
-            var export = db.Query<Data.Table>(Query.ExportSingleTable, new { schema, table });
+            var exportedTable = db.Query<Data.Table>(Query.ExportSingleTable, new { schema, table });
+            using var writer = new CodeWriter(file);
+            writer.WriteTexts(
+                "using System;",
+                "using System.Collections.Generic;",
+                "using System.ComponentModel.DataAnnotations;",
+                "using System.ComponentModel.DataAnnotations.Schema;",
+                "using System.Data.Entity.Spatial;");
+
+            writer.WriteLine();
+
+            writer.BeginBlock($"namespace {exportedTable.Schema}");
+            writer.WriteTable(exportedTable);
+            writer.EndBlock();
         }
 
         [Command("database")]
