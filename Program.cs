@@ -1,8 +1,6 @@
 ﻿using ScaffoldEF.Commands;
 using ScaffoldEF.Data;
 using System;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 
 namespace ScaffoldEF
@@ -14,6 +12,7 @@ namespace ScaffoldEF
             try
             {
                 Exec.Run(args);
+                /*
                 var definition = Definition.Load(File.OpenRead("export.xml"));
                 using var output = new CodeWriter("export.txt");
                 foreach (var schema in definition.Schemas)
@@ -103,6 +102,7 @@ namespace ScaffoldEF
                         output.EndBlock();
                     }
                 }
+                */
             }
             catch (TargetInvocationException tex)
             {

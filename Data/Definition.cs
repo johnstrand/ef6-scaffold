@@ -7,9 +7,9 @@ namespace ScaffoldEF.Data
     [XmlRoot("export")]
     public class Definition
     {
-        [XmlArray("schemas")]
-        [XmlArrayItem("schema")]
-        public List<Schema> Schemas { get; set; }
+        [XmlArray("table")]
+        [XmlArrayItem("tables")]
+        public List<Table> Schemas { get; set; }
 
         [XmlArray("foreign_keys")]
         [XmlArrayItem("foreign_key")]
@@ -29,22 +29,15 @@ namespace ScaffoldEF.Data
         public List<ForeignKey> ForeignKeys { get; set; }
     }
 
-    public class Schema
-    {
-        [XmlAttribute("name")]
-        public string Name { get; set; }
-
-        [XmlElement("table")]
-        public List<Table> Tables { get; set; }
-    }
-
+    [XmlRoot("table")]
     public class Table
     {
         [XmlAttribute("name")]
         public string Name { get; set; }
+        [XmlAttribute("schema")]
+        public string Schema { get; set; }
 
-        [XmlArray("columns")]
-        [XmlArrayItem("column")]
+        [XmlElement("column")]
         public List<Column> Columns { get; set; }
     }
 

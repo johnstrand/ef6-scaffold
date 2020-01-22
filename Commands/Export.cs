@@ -9,6 +9,21 @@ namespace ScaffoldEF.Commands
     [Command("export")]
     static class Export
     {
+        [Command("table")]
+        internal static void Table(string target, string schema, string table)
+        {
+            Console.WriteLine($"Exporting table {schema}.{table} on '{target}'");
+            Settings.ConnectionManager.TryGet(target, out var connection).AssertIsTrue($"Connection '{target}' is not configured");
+            using var db = new Data.DbClient(connection);
+            var export = db.Query<Data.Table>(Query.ExportSingleTable, new { schema, table });
+        }
+
+        [Command("database")]
+        internal static void Database(string target, string file)
+        {
+            throw new NotImplementedException();
+        }
+
         [Command("fk")]
         internal static void ForeignKeys(string target, string file)
         {
